@@ -20,7 +20,6 @@
             position: relative;
         }
 
-        /* Blurred background using ::before */
         body::before {
             content: "";
             position: absolute;
@@ -70,21 +69,46 @@
         }
 
         .start-btn {
-            padding: 0.9rem 1.8rem;
-            font-size: 1rem;
-            border-radius: 12px;
+            position: relative;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
             border: none;
-            background: rgba(76, 175, 80, 0.85);
+            background: linear-gradient(135deg, #2196f3, #00e5ff);
             color: white;
             cursor: pointer;
             font-weight: bold;
-            letter-spacing: 0.5px;
-            transition: background 0.3s ease, transform 0.2s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        
+        .start-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.6),
+                    transparent);
+            transition: all 0.5s;
+            z-index: 0;
         }
 
         .start-btn:hover {
-            background: rgba(67, 160, 71, 0.95);
-            transform: scale(1.05);
+            transform: scale(1.08);
+            box-shadow: 0 6px 25px rgba(33, 150, 243, 0.6);
+        }
+
+        .start-btn:hover::before {
+            left: 100%;
         }
     </style>
 </head>
@@ -92,7 +116,7 @@
 <body>
     <div class="card" id="startCard">
         <img src="./techtrivia.jpg" alt="Quiz Image">
-        <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+        <button class="start-btn" onclick="startQuiz()">Start Hackathon</button>
     </div>
 
     <iframe id="quizFrame" src="" allowfullscreen hidden></iframe>
@@ -102,16 +126,16 @@
     </audio>
 
     <script>
-        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScX7ALJOC-drUdPas3TilXbOy9MATH1ubl1Thc8qPHnIulhpA/viewform";
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScH0ABMUIonfycsEJntH3Nqlq9thAX3hRmfS3EYGx_AV5OyWA/viewform?usp=header";
         const alarm = document.getElementById("alarmSound");
 
         if (localStorage.getItem("attend") === "blocked") {
-            document.body.innerHTML =  `
-    <div class="card" style="color:white; text-align:center; max-width:320px;">
-      <h1 style="color:#ff4c4c; margin-bottom:12px;">Access Denied</h1>
-      <p>You should not attend this quiz again!</p>
-    </div>
-  `;
+            document.body.innerHTML = `
+                <div class="card" style="color:white; text-align:center; max-width:320px;">
+                <h1 style="color:#ff4c4c; margin-bottom:12px;">Access Denied</h1>
+                <p>You should not attend this quiz again!</p>
+                </div>
+            `;
         }
 
         function startQuiz() {
@@ -150,7 +174,7 @@
         document.addEventListener("fullscreenchange", () => {
             if (!document.fullscreenElement) {
                 playAlarm();
-                alert("⚠️ Fullscreen is required! Returning...");
+                alert("Fullscreen is required! Returning...");
                 enterFullscreen(document.getElementById("quizFrame"));
             } else {
                 alarm.pause();
@@ -170,11 +194,11 @@
             } else {
                 if (localStorage.getItem("attend") === "blocked") {
                     document.body.innerHTML = `
-    <div class="card" style="color:white; text-align:center; max-width:320px;">
-      <h1 style="color:#ff4c4c; margin-bottom:12px;">Access Denied</h1>
-      <p>You should not attend this quiz again!</p>
-    </div>
-  `;
+                        <div class="card" style="color:white; text-align:center; max-width:320px;">
+                        <h1 style="color:#ff4c4c; margin-bottom:12px;">Access Denied</h1>
+                        <p>You should not attend this quiz again!</p>
+                        </div>
+                    `;
                 }
 
             }
